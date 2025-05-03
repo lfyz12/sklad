@@ -1,0 +1,7 @@
+export const ADMINROUTER = '/admin'
+export const AGENTROUTER = '/agent'
+export const DOCSROUTER = '/docs'
+export const LOGINROUTER = '/login'
+export const PRODUCTROUTER = '/product'
+export const REPORTROUTER = '/report'
+export const HOMEROUTER = '/'
