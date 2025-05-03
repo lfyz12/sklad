@@ -47,7 +47,7 @@ const addProduct = () => {
         return;
     }
     setItems([...items, item]);
-    // setItem({ ProductId: '', Quantity: 0, Price: '' }); // Очистка полей
+    setItem({ ProductId: '', Quantity: 0, Price: '' }); // Очистка полей
 };
 
 
@@ -98,11 +98,11 @@ const addProduct = () => {
                         <div className="border-t pt-4">
                             <h3 className="font-medium mb-2">Товары</h3>
                             <div className="space-y-2">
-                                {items.length > 0 && products.length > 0 && items.map((pItem, index) => {
+                                {items.length > 0 && products && items.map((pItem, index) => {
                                     const product = products.find(p => p.Id === pItem.ProductId);
                                     return (
                                         <div key={index} className="flex items-center gap-2">
-                                            <span>{product ? product.Name : products.find(p => p.Id === item.ProductId).Name}</span>
+                                            <span>{product ? product.Name : 'Неизвестный товар'}</span>
                                             <span>{pItem.Quantity}</span>
                                         </div>
                                     );
@@ -114,7 +114,7 @@ const addProduct = () => {
                                         disabled={isDisabled}
                                         className="flex-1 px-2 py-1 border rounded"
                                         onChange={e => {
-                                            setItem({...item, ProductId: e.target.value, Price: productStore.products.find(p => p.Id === e.target.value).Price})
+                                            setItem({...item, ProductId: +e.target.value, Price: productStore.products.find(p => p.Id === e.target.value).Price})
                                         }}
                                     >
                                         {productStore.products.map(product => (
