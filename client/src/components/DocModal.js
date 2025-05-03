@@ -47,7 +47,7 @@ const addProduct = () => {
         return;
     }
     setItems([...items, item]);
-    setItem({ ProductId: '', Quantity: 0, Price: '' }); // Очистка полей
+    // setItem({ ProductId: '', Quantity: 0, Price: '' }); // Очистка полей
 };
 
 
@@ -98,12 +98,12 @@ const addProduct = () => {
                         <div className="border-t pt-4">
                             <h3 className="font-medium mb-2">Товары</h3>
                             <div className="space-y-2">
-                                {items.length > 0 && products.length > 0 && items.map((item, index) => {
-                                    const product = products.find(p => p.Id === item.ProductId);
+                                {items.length > 0 && products.length > 0 && items.map((pItem, index) => {
+                                    const product = products.find(p => p.Id === pItem.ProductId);
                                     return (
                                         <div key={index} className="flex items-center gap-2">
-                                            <span>{product ? product.Name : 'Неизвестный товар'}</span>
-                                            <span>{item.Quantity}</span>
+                                            <span>{product ? product.Name : products.find(p => p.Id === item.ProductId).Name}</span>
+                                            <span>{pItem.Quantity}</span>
                                         </div>
                                     );
                                 })}
