@@ -8,26 +8,36 @@ import { Context } from '../index';
 
 const DocModal = observer(({ document, isOpen, onClose }) => {
     const { documentStore, agentStore, productStore } = useContext(Context);
-    const [quantity, setQuantity] = useState(0)
-    const [agentId, setAgentId] = useState(0)
-    const [type, setType] = useState('income')
-    const [items, setItems] = useState([])
-    const [isDisabled, setIsDisabled] = useState(document ? true : false)
+    const [quantity, setQuantity] = useState(0);
+    const [agentId, setAgentId] = useState(0);
+    const [type, setType] = useState('income');
+    const [items, setItems] = useState([]);
+    const [isDisabled, setIsDisabled] = useState(document ? true : false);
     const [item, setItem] = useState({
         ProductId: '',
-        Quantity: quantity,
+        Quantity: 1,
         Price: ''
     });
 
     useEffect(() => {
-        if (document) {
-            setType(document.Type)
-            setAgentId(document.AgentId)
-            setItems(document.DocumentDetails)
-        }
-        agentStore.fetchAll();
-        productStore.fetchAll();
-    }, []);
+        const loadData = async () => {
+            await Promise.all([
+                agentStore.fetchAll(),
+                productStore.fetchAll()
+            ]);
+
+            if (document) {
+                setType(document.Type);
+                setAgentId(document.AgentId);
+                // Убедимся что продукты загружены перед установкой items
+                setItems(document.DocumentDetails.map(detail => ({
+                    ...detail,
+                    ProductId: detail.ProductId
+                })));
+            }
+        };
+        loadData();
+    }, [document]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -40,7 +50,19 @@ const DocModal = observer(({ document, isOpen, onClose }) => {
     };
 
     const addProduct = () => {
-        setItems([...items, item])
+        if (!item.ProductId) {
+            alert('Пожалуйста, выберите товар');
+            return;
+        }
+
+        const exists = items.some(i => i.ProductId === item.ProductId);
+        if (exists) {
+            alert('Этот товар уже добавлен');
+            return;
+        }
+
+        setItems([...items, item]);
+        setItem({ ProductId: '', Quantity: 1, Price: '' });
     };
 
     return (
@@ -90,40 +112,58 @@ const DocModal = observer(({ document, isOpen, onClose }) => {
                         <div className="border-t pt-4">
                             <h3 className="font-medium mb-2">Товары</h3>
                             <div className="space-y-2">
-                                {items.length > 0 && items.map((item, index) => {
+                                {items.length > 0 && productStore.products.length > 0 && items.map((pItem, index) => {
+                                    const product = productStore.products.find(p => p.Id === pItem.ProductId);
                                     return (
                                         <div key={index} className="flex items-center gap-2">
-                                            <span>{productStore.products.find(p => p.Id === item.ProductId).Name}</span>
-                                            <span>{item.Quantity}</span>
+                                            <span>{product?.Name || 'Загрузка...'}</span>
+                                            <span>{pItem.Quantity}</span>
                                         </div>
-                                    )
+                                    );
                                 })}
-                                {productStore.products.length > 0 && <div className="flex items-center gap-2">
-                                    <select
-                                        value={item.ProductId}
-                                        disabled={isDisabled}
-                                        className="flex-1 px-2 py-1 border rounded"
-                                        onChange={e => {
-                                            setItem({...item, ProductId: e.target.value, Price: productStore.products.find(p => p.Id === e.target.value).Price})
-                                        }}
-                                    >
-                                        {productStore.products.map(product => (
-                                            <option key={product.Id} value={product.Id}>{product.Name}</option>
-                                        ))}
-                                    </select>
-                                    <input
-                                        type="number"
-                                        min="1"
-                                        disabled={isDisabled}
-                                        value={item.Quantity}
-                                        onChange={e => setItem({...item, Quantity: +e.target.value})}
-                                        className="w-20 px-2 py-1 border rounded"
-                                    />
-                                </div>}
+
+                                {productStore.products.length > 0 && (
+                                    <div className="flex items-center gap-2">
+                                        <select
+                                            value={item.ProductId}
+                                            disabled={isDisabled}
+                                            className="flex-1 px-2 py-1 border rounded"
+                                            onChange={e => {
+                                                const product = productStore.products.find(
+                                                    p => p.Id === Number(e.target.value)
+                                                );
+                                                setItem({
+                                                    ...item,
+                                                    ProductId: Number(e.target.value),
+                                                    Price: product?.Price || 0
+                                                });
+                                            }}
+                                        >
+                                            <option value="">Выберите товар</option>
+                                            {productStore.products.map(product => (
+                                                <option key={product.Id} value={product.Id}>
+                                                    {product.Name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <input
+                                            type="number"
+                                            min="1"
+                                            disabled={isDisabled}
+                                            value={item.Quantity}
+                                            onChange={(e) =>
+                                                setItem({
+                                                    ...item,
+                                                    Quantity: Math.max(1, +e.target.value)
+                                                })}
+                                            className="w-20 px-2 py-1 border rounded"
+                                        />
+                                    </div>
+                                )}
                                 <button
                                     type="button"
                                     disabled={isDisabled}
-                                    onClick={() => addProduct()}
+                                    onClick={addProduct}
                                     className="text-sm text-blue-600 hover:text-blue-800"
                                 >
                                     + Добавить товар
