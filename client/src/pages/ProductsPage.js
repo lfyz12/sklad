@@ -14,6 +14,8 @@ const ProductsPage = observer(() => {
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
 
+    const isAdmin = userStore.isAuth && userStore.user && userStore.user.isAdmin;
+
     useEffect(() => {
         productStore.fetchAll();
     }, [productStore.products.length]);
@@ -103,7 +105,7 @@ const ProductsPage = observer(() => {
                 <table className="w-full">
                     <thead className="bg-[#0c1d37]/5">
                     <tr>
-                        {userStore.user.isAdmin ? ['Id', 'Name', 'Description', 'Quantity', 'Price', 'createdAt', 'updatedAt'].map((key) => (
+                        {isAdmin? ['Id', 'Name', 'Description', 'Quantity', 'Price', 'createdAt', 'updatedAt'].map((key) => (
                                 <th
                                     key={key}
                                     className="px-4 py-3 text-left text-sm font-semibold text-[#0c1d37] cursor-pointer"
