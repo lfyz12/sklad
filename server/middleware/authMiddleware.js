@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const ApiError = require('../error/ApiError')
+const ApiError = require('../Error/ApiError')
 
 
 module.exports = function (req, res, next) {
