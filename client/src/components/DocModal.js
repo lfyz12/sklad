@@ -55,6 +55,11 @@ const DocModal = observer(({ document, isOpen, onClose }) => {
             alert('Этот товар уже добавлен');
             return;
         }
+        if (!item.ProductId) {
+            alert('Добавьте хотя бы один товар')
+            return;
+        }
+
 
         setItems([...items, item])
     };
@@ -153,6 +158,7 @@ const DocModal = observer(({ document, isOpen, onClose }) => {
                                                 })
                                             }}
                                         >
+                                            <option value={''}>Выберите товар</option>
                                             {productStore.products.map(product => (
                                                 <option key={product.Id} value={product.Id}>{product.Name}</option>
                                             ))}
@@ -189,7 +195,7 @@ const DocModal = observer(({ document, isOpen, onClose }) => {
                                 onClick={onClose}
                                 className="px-4 py-2 border rounded"
                             >
-                                Ок
+                                {isDisabled ? 'Ок' : 'Отмена'}
                             </button>
                             {!document && <button
                                 type="submit"
