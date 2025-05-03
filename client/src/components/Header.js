@@ -139,24 +139,24 @@ const Header = () => {
                 <div className="md:hidden bg-[#161b26]">
                     <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
                         <Link
-                            to="/directories"
+                            to={PRODUCTROUTER}
                             className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-[#ff7a00]"
                         >
                             Товары
                         </Link>
                         <Link
-                            to="/documents"
+                            to={DOCSROUTER}
                             className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-[#ff7a00]"
                         >
                             Документы
                         </Link>
                         <Link
-                            to="/reports"
+                            to={REPORTROUTER}
                             className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-[#ff7a00]"
                         >
                             Отчеты
                         </Link>
-                        <div className="relative">
+                        {userStore.user.isAdmin && <div className="relative">
                             <button
                                 onClick={() => setIsServicesOpen(!isServicesOpen)}
                                 className="flex w-full items-center justify-between rounded-md px-3 py-2 text-base font-medium text-white hover:bg-[#ff7a00]"
@@ -176,20 +176,20 @@ const Header = () => {
                             {isServicesOpen && (
                                 <div className="pl-4">
                                     <Link
-                                        to="/admin"
+                                        to={ADMINROUTER + '/users'}
                                         className="block rounded-md px-3 py-2 text-sm text-gray-200 hover:bg-[#ff7a00] hover:text-white"
                                     >
                                         Админка
                                     </Link>
                                     <Link
-                                        to="/stock"
+                                        to={ADMINROUTER + '/stock'}
                                         className="block rounded-md px-3 py-2 text-sm text-gray-200 hover:bg-[#ff7a00] hover:text-white"
                                     >
                                         Остатки
                                     </Link>
                                 </div>
                             )}
-                        </div>
+                        </div>}
                         <button
                             onClick={handleLogout}
                             className="w-full text-left block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-[#ff7a00]"
