@@ -39,9 +39,16 @@ const DocModal = observer(({ document, isOpen, onClose }) => {
         onClose();
     };
 
-    const addProduct = () => {
-        setItems([...items, item])
-    };
+const addProduct = () => {
+    const exists = items.some(i => i.ProductId === item.ProductId);
+    if (exists) {
+        alert('Этот товар уже добавлен');
+        return;
+    }
+    setItems([...items, item]);
+    setItem({ ProductId: '', Quantity: 0, Price: '' }); // Очистка полей
+};
+
 
     return (
         <Dialog open={isOpen} onClose={onClose} className="relative z-50">
@@ -91,13 +98,15 @@ const DocModal = observer(({ document, isOpen, onClose }) => {
                             <h3 className="font-medium mb-2">Товары</h3>
                             <div className="space-y-2">
                                 {items.length > 0 && items.map((item, index) => {
+                                    const product = productStore.products.find(p => p.Id === item.ProductId);
                                     return (
                                         <div key={index} className="flex items-center gap-2">
-                                            <span>{productStore.products.find(p => p.Id === item.ProductId).Name}</span>
+                                            <span>{product ? product.Name : 'Неизвестный товар'}</span>
                                             <span>{item.Quantity}</span>
                                         </div>
-                                    )
+                                    );
                                 })}
+
                                 {productStore.products.length > 0 && <div className="flex items-center gap-2">
                                     <select
                                         value={item.ProductId}
@@ -111,14 +120,25 @@ const DocModal = observer(({ document, isOpen, onClose }) => {
                                             <option key={product.Id} value={product.Id}>{product.Name}</option>
                                         ))}
                                     </select>
-                                    <input
-                                        type="number"
-                                        min="1"
-                                        disabled={isDisabled}
-                                        value={item.Quantity}
-                                        onChange={e => setItem({...item, Quantity: +e.target.value})}
-                                        className="w-20 px-2 py-1 border rounded"
+                                   <input
+                                      type="number"
+                                      min="1"
+                                      disabled={isDisabled}
+                                      value={item.Quantity === 0 ? '' : item.Quantity}
+                                      onFocus={(e) => {
+                                        if (item.Quantity === 0) {
+                                          setItem({ ...item, Quantity: '' });
+                                        }
+                                      }}
+                                      onBlur={(e) => {
+                                        if (!e.target.value) {
+                                          setItem({ ...item, Quantity: 1 });
+                                        }
+                                      }}
+                                      onChange={(e) => setItem({ ...item, Quantity: +e.target.value })} 
+                                      className="w-20 px-2 py-1 border rounded"
                                     />
+
                                 </div>}
                                 <button
                                     type="button"
