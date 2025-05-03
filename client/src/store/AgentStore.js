@@ -82,6 +82,7 @@ export default class AgentStore {
         try {
             const { data } = await AgentService.getById(id);
             this.setSelectedAgent(data);
+            return data
         } catch (e) {
             this.setError("Ошибка при получении агента");
             console.error(e);
