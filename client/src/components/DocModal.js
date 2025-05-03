@@ -50,19 +50,13 @@ const DocModal = observer(({ document, isOpen, onClose }) => {
     };
 
     const addProduct = () => {
-        if (!item.ProductId) {
-            alert('Пожалуйста, выберите товар');
-            return;
-        }
-
         const exists = items.some(i => i.ProductId === item.ProductId);
         if (exists) {
             alert('Этот товар уже добавлен');
             return;
         }
 
-        setItems([...items, item]);
-        setItem({ ProductId: '', Quantity: 1, Price: '' });
+        setItems([...items, item])
     };
 
     return (
@@ -112,14 +106,37 @@ const DocModal = observer(({ document, isOpen, onClose }) => {
                         <div className="border-t pt-4">
                             <h3 className="font-medium mb-2">Товары</h3>
                             <div className="space-y-2">
-                                {items.length > 0 && productStore.products.length > 0 && items.map((pItem, index) => {
-                                    const product = productStore.products.find(p => p.Id === pItem.ProductId);
+                                {items.length > 0 && items.map((item, index) => {
+
                                     return (
-                                        <div key={index} className="flex items-center gap-2">
-                                            <span>{product?.Name || 'Загрузка...'}</span>
-                                            <span>{pItem.Quantity}</span>
+                                        <div
+                                            key={index}
+                                            className="group flex items-center justify-between p-3 md:p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 border border-[#0c1d37]/10 hover:border-[#0c1d37]/20"
+                                        >
+                                            <div className="flex-1 min-w-0">
+                                                <h4 className="text-base font-semibold text-[#0c1d37] truncate">
+                                                    {productStore.products.find(p => p.Id === item.ProductId)?.Name || (
+                                                        <span className="text-gray-400 italic">Неизвестный товар</span>
+                                                    )}
+                                                </h4>
+                                                <p className="text-sm text-[#7a8396] mt-1">
+                                                    ID: {item.ProductId}
+                                                </p>
+                                            </div>
+
+                                            <div className="ml-4 flex-shrink-0">
+                                                <div
+                                                    className="inline-flex items-center px-3 py-1.5 rounded-full bg-[#ff7a00]/10">
+      <span className="text-sm font-bold text-[#0c1d37]">
+        {item.Quantity}
+      </span>
+                                                    <span className="ml-1 text-xs text-[#ff7a00] font-medium">
+        шт.
+      </span>
+                                                </div>
+                                            </div>
                                         </div>
-                                    );
+                                    )
                                 })}
 
                                 {productStore.products.length > 0 && (
@@ -129,20 +146,15 @@ const DocModal = observer(({ document, isOpen, onClose }) => {
                                             disabled={isDisabled}
                                             className="flex-1 px-2 py-1 border rounded"
                                             onChange={e => {
-                                                const selectedId = +e.target.value;
-                                                const selectedProduct = productStore.products.find(p => p.Id === selectedId);
                                                 setItem({
                                                     ...item,
-                                                    ProductId: selectedId,
-                                                    Price: selectedProduct?.Price || '',
-                                                });
+                                                    ProductId: e.target.value,
+                                                    Price: productStore.products.find(p => p.Id === e.target.value).Price
+                                                })
                                             }}
                                         >
-                                            <option value="">Выберите товар</option>
                                             {productStore.products.map(product => (
-                                                <option key={product.Id} value={product.Id}>
-                                                    {product.Name}
-                                                </option>
+                                                <option key={product.Id} value={product.Id}>{product.Name}</option>
                                             ))}
                                         </select>
 
