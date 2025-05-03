@@ -6,16 +6,16 @@ import { observer } from "mobx-react-lite";
 
 const Home = () => {
     const { userStore } = useContext(Context);
-    const navigate = useNavigate()
-    const redirect = () => {
-        if (!userStore.isAuth) {
-            navigate(LOGINROUTER)
-        }
-    }
+    // const navigate = useNavigate()
+    // const redirect = () => {
+    //     if (!userStore.isAuth) {
+    //         navigate(LOGINROUTER)
+    //     }
+    // }
 
-    useEffect(() => {
-        redirect()
-    }, [userStore.isAuth])
+    // useEffect(() => {
+    //     redirect()
+    // }, [userStore.isAuth])
 
     return (
         <div className="min-h-screen bg-[#0c1d37] p-4 md:p-8">
