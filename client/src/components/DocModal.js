@@ -12,6 +12,7 @@ const DocModal = observer(({ document, isOpen, onClose }) => {
     const [agentId, setAgentId] = useState(0)
     const [type, setType] = useState('income')
     const [items, setItems] = useState([])
+    const [products, setProducts] = useState(null)
     const [isDisabled, setIsDisabled] = useState(document ? true : false)
     const [item, setItem] = useState({
         ProductId: '',
@@ -26,7 +27,7 @@ const DocModal = observer(({ document, isOpen, onClose }) => {
             setItems(document.DocumentDetails)
         }
         agentStore.fetchAll();
-        productStore.fetchAll();
+        productStore.fetchAll().then(res => setProducts(productStore.products))
     }, []);
 
     const handleSubmit = async (e) => {
@@ -97,8 +98,8 @@ const addProduct = () => {
                         <div className="border-t pt-4">
                             <h3 className="font-medium mb-2">Товары</h3>
                             <div className="space-y-2">
-                                {items.length > 0 && items.map((item, index) => {
-                                    const product = productStore.products.find(p => p.Id === item.ProductId);
+                                {items.length > 0 && products.length > 0 && items.map((item, index) => {
+                                    const product = products.find(p => p.Id === item.ProductId);
                                     return (
                                         <div key={index} className="flex items-center gap-2">
                                             <span>{product ? product.Name : 'Неизвестный товар'}</span>
