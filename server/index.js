@@ -10,7 +10,7 @@ const errorMiddleware = require('./middleware/errorMiddleware');
 const PORT = process.env.PORT || 5000
 
 const corsOptions ={
-    origin:'http://localhost:3000',
+    origin: process.env.CLIENT_URL,
     credentials:true,
     optionSuccessStatus:200
 }
