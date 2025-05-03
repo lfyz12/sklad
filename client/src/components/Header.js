@@ -36,6 +36,13 @@ const Header = () => {
                         />
                     </NavLink>
 
+                     <button
+                            onClick={() => navigate(LOGINROUTER)}
+                            className="text-white bg-[#ff7a00] hover:text-[#161b26] transition-colors px-3 py-2 text-sm font-medium ml-4"
+                        >
+                            Войти
+                     </button>
+
                     {/* Десктопное меню */}
                     {userStore.isAuth && <nav className="hidden md:flex items-center space-x-8">
                         <Link
