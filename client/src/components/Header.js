@@ -61,7 +61,7 @@ const Header = () => {
                         </Link>
 
                         {/* Выпадающее меню Сервис */}
-                        {userStore.user.isAdmin && <div
+                        {userStore.isAuth && userStore.user.isAdmin && <div
                             className="relative"
                         >
                             <button
@@ -156,7 +156,7 @@ const Header = () => {
                         >
                             Отчеты
                         </Link>
-                        {userStore.user.isAdmin && <div className="relative">
+                        {userStore.isAuth && userStore.user.isAdmin && <div className="relative">
                             <button
                                 onClick={() => setIsServicesOpen(!isServicesOpen)}
                                 className="flex w-full items-center justify-between rounded-md px-3 py-2 text-base font-medium text-white hover:bg-[#ff7a00]"
