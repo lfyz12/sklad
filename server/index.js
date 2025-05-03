@@ -23,7 +23,7 @@ app.use(errorMiddleware);
 const start = async () => {
     try {
         await db.authenticate()
-        await db.sync({alter: true})
+        await db.sync()
         app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
     } catch (e) {
         console.log(e)
