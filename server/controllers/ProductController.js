@@ -1,5 +1,4 @@
 const { Product, DocumentDetails, Agent, Document} = require('../models/models');
-const uuid = require('uuid');
 const ApiError = require("../Error/ApiError");
 
 class ProductController {

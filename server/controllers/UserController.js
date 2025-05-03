@@ -1,5 +1,5 @@
-const { User, Order} = require('../models/models');
-const ApiError = require('../error/ApiError');
+const { User} = require('../models/models');
+const ApiError = require('../Error/ApiError');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 function generateTokens(payload) {

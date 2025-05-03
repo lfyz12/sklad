@@ -1,5 +1,4 @@
-const { agent, DocumentDetails, Agent, Document, Product} = require('../models/models');
-const uuid = require('uuid');
+const {DocumentDetails, Agent, Document, Product} = require('../models/models');
 const ApiError = require("../Error/ApiError");
 
 class AgentController {
