@@ -129,13 +129,12 @@ const DocModal = observer(({ document, isOpen, onClose }) => {
                                             disabled={isDisabled}
                                             className="flex-1 px-2 py-1 border rounded"
                                             onChange={e => {
-                                                const product = productStore.products.find(
-                                                    p => p.Id === Number(e.target.value)
-                                                );
+                                                const selectedId = +e.target.value;
+                                                const selectedProduct = productStore.products.find(p => p.Id === selectedId);
                                                 setItem({
                                                     ...item,
-                                                    ProductId: Number(e.target.value),
-                                                    Price: product?.Price || 0
+                                                    ProductId: selectedId,
+                                                    Price: selectedProduct?.Price || '',
                                                 });
                                             }}
                                         >
@@ -146,6 +145,7 @@ const DocModal = observer(({ document, isOpen, onClose }) => {
                                                 </option>
                                             ))}
                                         </select>
+
                                         <input
                                             type="number"
                                             min="1"
