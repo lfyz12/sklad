@@ -17,6 +17,9 @@ const Header = () => {
         navigate(LOGINROUTER)
     }
 
+    const isAdmin = userStore.isAuth && userStore.user && userStore.user.isAdmin;
+
+
     return (
         <header className="bg-[#161b26] shadow-lg">
             <div className="mx-auto px-4 sm:px-6 lg:px-8">
@@ -32,6 +35,13 @@ const Header = () => {
                             className="h-full object-contain" // object-contain сохранит пропорции
                         />
                     </NavLink>
+
+                    {!userStore.isAuth && <button
+                            onClick={() => navigate(LOGINROUTER)}
+                            className="text-white bg-[#ff7a00] hover:text-[#161b26] transition-colors px-3 py-2 text-sm font-medium ml-4"
+                        >
+                            Войти
+                     </button>}
 
                     {/* Десктопное меню */}
                     {userStore.isAuth && <nav className="hidden md:flex items-center space-x-8">
@@ -61,7 +71,7 @@ const Header = () => {
                         </Link>
 
                         {/* Выпадающее меню Сервис */}
-                        {userStore.user.isAdmin && <div
+                        {isAdmin && <div
                             className="relative"
                         >
                             <button
@@ -81,7 +91,7 @@ const Header = () => {
                                 </svg>
                             </button>
 
-                            {isServicesOpen && userStore.user.isAdmin && (
+                            {isServicesOpen && isAdmin && (
                                 <div
                                     className="absolute right-0 mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
                                     <div className="py-1">
@@ -156,7 +166,7 @@ const Header = () => {
                         >
                             Отчеты
                         </Link>
-                        {userStore.user.isAdmin && <div className="relative">
+                        {userStore.isAuth && isAdmin && <div className="relative">
                             <button
                                 onClick={() => setIsServicesOpen(!isServicesOpen)}
                                 className="flex w-full items-center justify-between rounded-md px-3 py-2 text-base font-medium text-white hover:bg-[#ff7a00]"
