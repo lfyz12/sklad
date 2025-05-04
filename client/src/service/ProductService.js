@@ -17,8 +17,8 @@ const ProductService = {
     },
 
     // Обновление информации о товаре
-    async update(Id, Name, Price, Description) {
-        return await $authHost.put('/api/product/update', { Id, Name, Price, Description });
+    async update(Id, Name, Price, Quantity, Description) {
+        return await $authHost.post('/api/product/update', { Id, Name, Price, Quantity, Description });
     },
 
     // Удаление товара
