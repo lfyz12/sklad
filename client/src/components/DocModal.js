@@ -59,7 +59,10 @@ const DocModal = observer(({ document, isOpen, onClose }) => {
             alert('Добавьте хотя бы один товар')
             return;
         }
-
+        if (item.Quantity <= 0) {
+            alert('Введите количество')
+            return;
+        }
 
         setItems([...items, item])
     };
