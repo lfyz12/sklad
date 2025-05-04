@@ -104,10 +104,10 @@ export default class ProductStore {
         }
     }
 
-    async updateProduct({ Id, Name, Price, Description }) {
+    async updateProduct({ Id, Name, Price, Quantity, Description }) {
         this.setLoading(true);
         try {
-            const { data } = await ProductService.update(Id, Name, Price, Description);
+            const { data } = await ProductService.update(Id, Name, Price, Quantity, Description);
             this.fetchAll();
             return data;
         } catch (e) {
