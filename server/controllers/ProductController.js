@@ -47,12 +47,13 @@ class ProductController {
     // Обновление информации о соискателе
     async update(req, res, next) {
         try {
-            const { Id, Name, Price, Description } = req.body;
+            const { Id, Name, Price, Quantity Description } = req.body;
 
             const updated = await Product.update(
                 {
                     Name,
                     Price,
+                    Quantity,
                     Description,
                     UpdateDate: Date.now()
                 },
