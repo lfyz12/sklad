@@ -11,6 +11,6 @@ router.get('/getOne', authMiddleware, productController.getProduct)
 router.get('/getReport', authMiddleware, productController.getProductReportSummary)
 router.post('/getAgentReport', authMiddleware, productController.getProductAgentReport)
 
-router.put('/update', authMiddleware, productController.update)
+router.post('/update', authMiddleware, productController.update)
 
 module.exports = router;
