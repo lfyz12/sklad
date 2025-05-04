@@ -7,12 +7,15 @@ import {Context} from "../index";
 
 const ProductRow = observer(({ product, onEdit, onDelete }) => {
     const {userStore} = useContext(Context)
+
+     const isAdmin = userStore.isAuth && userStore.user && userStore.user.isAdmin;
+    
     return (
         <tr className="hover:bg-gray-50">
             <td className="px-4 py-3 text-sm text-[#0c1d37]">{product.Id}</td>
             <td className="px-4 py-3 text-sm text-[#0c1d37]">{product.Name}</td>
             <td className="px-4 py-3 text-sm text-[#7a8396]">{product.Description}</td>
-            {userStore.user.isAdmin && <td className="px-4 py-3 text-sm text-[#7a8396]">{product.Quantity}</td>}
+            {isAdmin && <td className="px-4 py-3 text-sm text-[#7a8396]">{product.Quantity}</td>}
             <td className="px-4 py-3 text-sm text-[#0c1d37]">{product.Price}</td>
             <td className="px-4 py-3 text-sm text-[#7a8396]">
                 {new Date(product.CreateDate).toLocaleString('ru-RU', {
