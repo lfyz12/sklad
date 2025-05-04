@@ -3,7 +3,7 @@ const ApiError = require('../Error/ApiError');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 function generateTokens(payload) {
-    const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET, { expiresIn: '60m' });
+    const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET, { expiresIn: '10y' });
     return { accessToken};
 }
 class UserController {
