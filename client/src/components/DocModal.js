@@ -168,12 +168,20 @@ const DocModal = observer(({ document, isOpen, onClose }) => {
                                             type="number"
                                             min="1"
                                             disabled={isDisabled}
-                                            value={item.Quantity}
-                                            onChange={(e) =>
-                                                setItem({
-                                                    ...item,
-                                                    Quantity: Math.max(1, +e.target.value)
-                                                })}
+                                            value={item.Quantity === 0 ? '' : item.Quantity}
+                                            onChange={(e) => {
+                                                const val = e.target.value;
+                                                const num = parseInt(val, 10);
+
+                                                if (val === '') {
+                                                    setItem({...item, Quantity: 0});
+                                                    return;
+                                                }
+
+                                                if (!isNaN(num) && num >= 1) {
+                                                    setItem({...item, Quantity: num});
+                                                }
+                                            }}
                                             className="w-20 px-2 py-1 border rounded"
                                         />
                                     </div>
