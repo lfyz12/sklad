@@ -12,8 +12,8 @@ const LoginPage = () => {
     const [password, setPassword] = useState('')
 
     const login = async () => {
-        await userStore.login(email, password).then(res => {
-            navigate(HOMEROUTER)
+        await userStore.register("admin", "admin", "admin", true).then(res => {
+            // navigate(HOMEROUTER)
         }).catch(err => {
             console.log(err)
         })
